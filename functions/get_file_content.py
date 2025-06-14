@@ -1,6 +1,7 @@
 from os.path import commonpath, isfile
 from utility import get_abs_paths
 from config import MAX_PROMPT_SIZE
+from google.genai import types
 
 def get_file_content(working_directory, file_path):
     #Check to see if the file is within the working directory
@@ -22,3 +23,17 @@ def get_file_content(working_directory, file_path):
         return file_content
     except Exception as ex:
         return f'Error: reading file "{file_path}" - {ex}'
+
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Retrieves the file content of the specified file path, constrained to the working directory",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The file path of the file to retrieve contents from.",
+            )
+        }
+    )
+)

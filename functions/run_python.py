@@ -3,6 +3,7 @@ from os import mkdir
 from utility import get_abs_paths
 from config import TIMEOUT
 import subprocess    
+from google.genai import types
 
 def run_python_file(working_directory, file_path, args=None):
     #Check to see if the directory is within the working directory
@@ -38,3 +39,21 @@ def run_python_file(working_directory, file_path, args=None):
         return "\n".join(formatted_output_arr) if formatted_output_arr else "No output produced."
     except Exception as ex:
         return f"Error: executing Python file: {ex}"
+
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Runs the python file with additional optional arguments and returns its standard output and error, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The file path of the python file to run.",
+            ),
+            "args": types.Schema(
+                type=types.Type.STRING,
+                description="The arguments to be passed to the executed python file."
+            )
+        }
+    )
+)

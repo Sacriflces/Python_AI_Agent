@@ -1,6 +1,7 @@
 from os.path import commonpath, isfile, exists, dirname
 from os import mkdir
 from utility import get_abs_paths
+from google.genai import types
 
 def write_file(working_directory, file_path, content):
     #Check to see if the directory is within the working directory
@@ -20,3 +21,20 @@ def write_file(working_directory, file_path, content):
     except Exception as ex:
         return f'Error: writing file "{file_path}" - {ex}'
 
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Writes the given content to the file specified at the file_path.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The file path of the file to write to.",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="The data to be written to the file at file_path."
+            )
+        }
+    )
+)
