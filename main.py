@@ -53,7 +53,7 @@ def agent_feedback_loop(client, messages, verbose):
         for candidate in response.candidates:
             messages.append(candidate.content)
         for function_call_result in function_call_results:
-            messages.append(function_call_result)
+            messages.append(types.Content(role="tool", parts=function_call_result))
 
 def call_functions(function_calls, verbose):
     results = []
@@ -63,7 +63,7 @@ def call_functions(function_calls, verbose):
             raise Exception("Error: No response from function call.")
         if verbose:
             print(f"-> {function_call_result.parts[0].function_response.response['result']}")
-        results.append(function_call_result.parts[0].function_response.response['result'])
+        results.append(function_call_result.parts[0])
     return results
 
 if __name__ == "__main__":
